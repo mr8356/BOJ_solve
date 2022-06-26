@@ -10,7 +10,7 @@ public class Silver_1436 {
         while(n > cnt){
             asw++;
             int temp = asw;
-            while (temp>600) {
+            while (temp>=666) {
                 if(temp%1000 == 666){
                     cnt++;
                     break;
