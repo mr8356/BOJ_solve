@@ -4,6 +4,7 @@ public class Sliver_2839 {
     public static void main(String[] args)   {
         Scanner scan = new Scanner(System.in);
         int n = scan.nextInt();
+        scan.close();
         int five = n/5;
         int left = n%5;
         switch (left) {

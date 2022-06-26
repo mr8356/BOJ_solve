@@ -11,6 +11,7 @@ public class Silver_7568 {
             int h = scan.nextInt(); // 키
             humans[i] = new Bmi(w, h); //객체 생성
         }
+        scan.close();
         for (int i = 0; i < n; i++) {
             int rank=1; //1등부터 시작
             for (int j = 0; j < n; j++) {
