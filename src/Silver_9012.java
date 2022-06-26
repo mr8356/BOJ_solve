@@ -11,7 +11,7 @@ public class Silver_9012 {
             str[i] = scan.nextLine();
         }
         scan.close();
-        Stack pair = new Stack<Character>();
+        Stack<Character> pair = new Stack<Character>();
         for (int i = 0; i < n; i++) {
             pair.clear();
             char[] chars = str[i].toCharArray();
@@ -21,7 +21,7 @@ public class Silver_9012 {
                 }
                 else if(chars[j]==')'){
                     if (pair.empty()) {
-                        pair.add("E");
+                        pair.add('E');
                         break;
                     }
                     else{
