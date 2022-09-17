@@ -24,5 +24,6 @@ public class Silver_1764 {
         System.out.println(numberOfStrangers);
         // sorting sets and print
         stragers.stream().sorted().forEach(System.out::println);
+        scan.close();
     }
 }
