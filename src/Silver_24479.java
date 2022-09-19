@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -11,61 +10,38 @@ import java.util.StringTokenizer;
 public class Silver_24479 {
     // Inner Class needs static
     static class Graph {
-        int visitedNodes;
-        class Node{
-            int data;
-            int sequence;
-            ArrayList<Node> adjacent;
-            boolean marked;
-            Node(int data){
-                this.data = data;
-                this.sequence = 0;
-                this.adjacent = new ArrayList<Node>();
-                this.marked = false;
-            }// constructor
-        }//Node
-
-        Node[] nodes;
+        boolean[] visited;
+        ArrayList<Integer>[] adjacents;
+        int ans[];
+        int cnt =1;
         Graph(int size){
-            this.visitedNodes = 1;
-            this.nodes = new Node[size];
-            for (int i = 1; i < size; i++) {
-                this.nodes[i] = new Node(i);
-            }
-        }// constructor
-
-        void addEdge(int i1 , int i2){
-            Node n1 = nodes[i1];
-            Node n2 = nodes[i2];
-            if(!n1.adjacent.contains(n2)){
-                n1.adjacent.add(n2);
-            }
-            if(!n2.adjacent.contains(n1)){
-                n2.adjacent.add(n1);
+            ans = new int[size];
+            this.visited = new boolean[size+1];
+            this.adjacents = new ArrayList[size+1];
+            for (int i = 1; i <= size ; i++) {
+                adjacents[i] = new ArrayList<Integer>();
             }
         }
-
-        // Search Fuctions (Dfs & Bfs) //
-        void dfsR(Node root){
-            if(root == null) return;
-            root.sequence = visitedNodes;
-            visitedNodes++;
-            Collections.sort(root.adjacent, new Comparator<Node>() {
-                @Override
-                public int compare(Node o1, Node o2) {
-                    // 순차 정렬을 해주는 코드(역방향은 부등호를 변경하거나 return 값을 바꿔주면 됨)
-                    if(o1.data > o2.data)
-                        return +1;
-                    else
-                        return -1;
-                }
-            });
-            for (Node n : root.adjacent) {
-                if (n.marked == false) {
-                    n.marked = true;
-                    dfsR(n);
+        void addEdge(int n1 , int n2){
+                adjacents[n1].add(n2);
+                adjacents[n2].add(n1);
+        }
+        //DFS
+        public void dfs() {
+            dfs(1);
+        }
+        public void dfs(int index) {
+            visit(index);
+            visited[index] = true;
+            for (Integer node : adjacents[index]) {
+                if (visited[node]==false) {
+                    dfs(node);
                 }
             }
+        }
+        public void visit(int index) {
+            ans[index-1] = cnt;
+            cnt++;
         }
     }//Graph
 
@@ -76,16 +52,18 @@ public class Silver_24479 {
         int numberOfNodes = Integer.parseInt(st.nextToken());
         int numberOfEdges = Integer.parseInt(st.nextToken());
         int start = Integer.parseInt(st.nextToken());
-        Graph graph = new Graph(numberOfNodes+1);
+        Graph graph = new Graph(numberOfNodes);
         for (int i = 0; i < numberOfEdges; i++) {
             st = new StringTokenizer(br.readLine());
             graph.addEdge(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
         }
-        br.close();
-        graph.nodes[start].marked = true;
-        graph.dfsR(graph.nodes[start]);
         for (int i = 1; i <= numberOfNodes; i++) {
-            System.out.println(graph.nodes[i].sequence);
+            Collections.sort(graph.adjacents[i]);
+        }
+        br.close();
+        graph.dfs(start);
+        for (int i : graph.ans) {
+            System.out.println(i);
         }
     }
 }
