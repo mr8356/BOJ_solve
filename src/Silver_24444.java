@@ -18,9 +18,6 @@ public class Silver_24444 {
         int cnt =1;
         Graph(int size){
             ans = new int[size];
-            for (int a : ans) {
-                a =0;
-            }
             this.visited = new boolean[size+1];
             this.adjacents = new ArrayList[size+1];
             for (int i = 1; i <= size ; i++) {
