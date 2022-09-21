@@ -26,7 +26,7 @@ public class Gold_7576 {
             this.time = time;
         }
     }
-    static boolean Isinside(int x , int y){
+    static boolean isinside(int x , int y){
         if( x>=0 && x<boxWidth)
             if( y>=0 && y<boxHeight)
                 return true;
@@ -36,25 +36,25 @@ public class Gold_7576 {
         int cnt = 0;
         while (!queue.isEmpty()) {
             Tomato ripe = queue.poll();
-            if (Isinside(ripe.x+1 , ripe.y) && box[ripe.x+1][ripe.y] == 0) {
+            if (isinside(ripe.x+1 , ripe.y) && box[ripe.x+1][ripe.y] == 0) {
                 queue.add(new Tomato(ripe.x+1, ripe.y , ripe.time + 1));
                 box[ripe.x+1][ripe.y] = 1;
                 cnt = ripe.time + 1;
 
             }
-            if (Isinside(ripe.x-1 , ripe.y) && box[ripe.x-1][ripe.y] == 0) {
+            if (isinside(ripe.x-1 , ripe.y) && box[ripe.x-1][ripe.y] == 0) {
                 queue.add(new Tomato(ripe.x-1, ripe.y , ripe.time + 1));
                 box[ripe.x-1][ripe.y] =1;
                 cnt = ripe.time + 1;
 
             }
-            if (Isinside(ripe.x , ripe.y+1) && box[ripe.x][ripe.y+1] == 0) {
+            if (isinside(ripe.x , ripe.y+1) && box[ripe.x][ripe.y+1] == 0) {
                 queue.add(new Tomato(ripe.x, ripe.y+1 , ripe.time + 1));
                 box[ripe.x][ripe.y+1] = 1;
                 cnt = ripe.time + 1;
 
             }
-            if (Isinside(ripe.x , ripe.y-1) && box[ripe.x][ripe.y-1] == 0) {
+            if (isinside(ripe.x , ripe.y-1) && box[ripe.x][ripe.y-1] == 0) {
                 queue.add(new Tomato(ripe.x, ripe.y-1 , ripe.time + 1));
                 box[ripe.x][ripe.y-1] = 1;
                 cnt = ripe.time + 1;
@@ -86,6 +86,7 @@ public class Gold_7576 {
                 }
             }
         }
+        br.close();
         System.out.println(bfs());
     }
 }
