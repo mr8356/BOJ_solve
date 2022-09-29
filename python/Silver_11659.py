@@ -1,3 +1,4 @@
+#누적합
 import sys
 input = sys.stdin.readline
 size , quizNum = map(int , input().split())

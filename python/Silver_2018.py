@@ -1,3 +1,4 @@
+#two point
 import sys
 n = int(input())
 start, end, cnt , sum = 1,1,1,1

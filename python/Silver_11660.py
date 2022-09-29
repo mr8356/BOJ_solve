@@ -1,3 +1,4 @@
+#누적합
 import sys;
 # https://puleugo.tistory.com/41
 input = sys.stdin.readline
