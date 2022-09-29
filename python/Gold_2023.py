@@ -1,6 +1,7 @@
 #DFS
+import sys
+sys.setrecursionlimit(10000)
 n = int(input())
-
 def isPrime(num):
     for i in range(2, int(num**(1/2))+1):
         if num%i==0:
