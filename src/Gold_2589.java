@@ -26,51 +26,50 @@ public class Gold_2589 {
             this.time = time;
         }
         boolean isSame(Land otherLand){
-            int x = otherLand.x;
-            int y = otherLand.y;
-            if(this.x == x && this.y == y){
+            if(this.x == otherLand.x && this.y == otherLand.y){
                 return true;
             }
             return false;
         }
     }
-    static boolean isinside(int x , int y){
+    static boolean isInside(int x , int y){
         if( x>=0 && x<boxWidth)
             if( y>=0 && y<boxHeight)
                 return true;
         return false;
     }
-    static int bfs(Land l1 , Land l2){
+    static int bfs(Land l1){
         Queue<Land> queue = new LinkedList<Land>();
         queue.add(l1);
         boolean[][] boxCopy = box.clone();
+        int distance =10;
         while (!queue.isEmpty()) {
             Land startLand = queue.poll();
-            if(startLand.isSame(l2)){
-                return startLand.time;
-            }
-            if (isinside(startLand.x+1 , startLand.y) && boxCopy[startLand.x+1][startLand.y] == true) {
+            if (isInside(startLand.x+1 , startLand.y) && boxCopy[startLand.x+1][startLand.y]) {
                 queue.add(new Land(startLand.x+1, startLand.y , startLand.time + 1));
                 boxCopy[startLand.x+1][startLand.y] = false;
+                distance =Math.max(distance, startLand.time+1);
 
             }
-            if (isinside(startLand.x-1 , startLand.y) && boxCopy[startLand.x-1][startLand.y] == true) {
+            if (isInside(startLand.x-1 , startLand.y) && boxCopy[startLand.x-1][startLand.y]) {
                 queue.add(new Land(startLand.x-1, startLand.y , startLand.time + 1));
                 boxCopy[startLand.x-1][startLand.y] =false;
+                distance =Math.max(distance, startLand.time+1);
 
             }
-            if (isinside(startLand.x , startLand.y+1) && boxCopy[startLand.x][startLand.y+1] == true) {
+            if (isInside(startLand.x , startLand.y+1) && boxCopy[startLand.x][startLand.y+1]) {
                 queue.add(new Land(startLand.x, startLand.y+1 , startLand.time + 1));
                 boxCopy[startLand.x][startLand.y+1] = false;
+                distance =Math.max(distance, startLand.time+1);
 
             }
-            if (isinside(startLand.x , startLand.y-1) && boxCopy[startLand.x][startLand.y-1] == true) {
+            if (isInside(startLand.x , startLand.y-1) && boxCopy[startLand.x][startLand.y-1]) {
                 queue.add(new Land(startLand.x, startLand.y-1 , startLand.time + 1));
                 boxCopy[startLand.x][startLand.y-1] = false;
+                distance =Math.max(distance, startLand.time+1);
             }
-            //
         }
-        return -1; // can't go (except from 보물섬)
+        return distance; // can't go (except from 보물섬)
     }
     public static void main(String[] args) throws IOException {
         final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -92,16 +91,10 @@ public class Gold_2589 {
             }
         }
         br.close();
-
         int maxTime = -1;
         // 백트래킹 알고리즘(조합). 순서쌍 임의로 2개씩 뽑고 중복 제거.
-        for (int i = 0; i < lands.size(); i++) {
-            for (int j = i+1; j < lands.size(); j++) {
-                int result = bfs(lands.get(i) , lands.get(j));
-                if (result>=maxTime) {
-                    maxTime = result;// 최대값 알고리즘
-                }
-            }
+        for (Land land : lands) {
+            maxTime = Math.max(bfs(land), maxTime);
         }
         System.out.println(maxTime);
     }
