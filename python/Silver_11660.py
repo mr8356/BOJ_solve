@@ -1,6 +1,5 @@
 #누적합
 import sys;
-# https://puleugo.tistory.com/41
 input = sys.stdin.readline
 
 N , M = map(int , input().split())
