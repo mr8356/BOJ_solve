@@ -16,7 +16,8 @@ def find(a):
 def union(a,b):
     a_parent = find(a)
     b_parent = find(b)
-    nodes[b_parent] = a_parent
+    if a_parent != b_parent:
+        nodes[b_parent] = a_parent
 
 for i in range(m):
     proc, a, b = map(int, input().split())
