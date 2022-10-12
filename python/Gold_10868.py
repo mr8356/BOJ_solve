@@ -1,3 +1,4 @@
+# 세그먼트 트리
 import sys
 input = sys.stdin.readline
 n, m = map(int, input().split())
