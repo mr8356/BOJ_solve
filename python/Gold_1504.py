@@ -14,10 +14,14 @@ def dijkstra(start , end):
     global possible
     dist = [sys.maxsize] * (n+1)
     dist[start] = 0
+    visited = [False] * (n+1)
     queue = PriorityQueue()
     queue.put((0 , start)) # (거리 , 노드)
     while queue.qsize() != 0:
         node = queue.get()
+        if visited[node[1]]:
+            continue
+        visited[node[1]] = True
         for i in adjacent[node[1]]:
             distance = node[0] + i[1]
             if distance < dist[i[0]]:
