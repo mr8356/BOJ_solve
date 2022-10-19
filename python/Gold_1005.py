@@ -3,6 +3,7 @@ import sys
 from collections import deque
 input = sys.stdin.readline
 test = int(input())
+i
 time = []
 ans = [0]*(test)
 for t in range(test):
