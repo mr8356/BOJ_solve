@@ -39,4 +39,3 @@ for t in range(test):
 for t in range(test):
     print(ans[t])
     
-
