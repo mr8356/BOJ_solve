@@ -3,11 +3,10 @@
 import sys
 input = sys.stdin.readline
 n, m = map(int, input().split())
-peoples = [0]*(n+1) # union list
-for i in range(1,n+1):
+peoples = [0]*(n+1)  # union list
+for i in range(1, n+1):
     peoples[i] = i
-knower_input = list(map(int, input().split()))
-knowers = knower_input[1:-1]
+
 
 def find(a):
     if peoples[a] == a:
@@ -16,31 +15,37 @@ def find(a):
         peoples[a] = find(peoples[a])
         return peoples[a]
 
-def union(a,b):
+
+def union(a, b):
     a = find(a)
     b = find(b)
-    if a!=b:
+    if a != b:
         peoples[b] = a
-partys = [True]*(m) # True is available party
-teams = [[]]
+
+
+knowers = list(map(int, input().split()))[1::]
+if len(knowers) == 0:
+    print(m)
+    exit()
+
+first_knower = knowers[0]
+
+for k in knowers[1::]:
+    union(first_knower, k)
+
+partys = [True]*(m)  # True is available party
+first_teamates = []
 for i in range(m):
-    teams.append(list(map(int, input().split()))[1:-1])
-    for j in knowers:
-        if j in teams[0]:
-            partys[i] = False
-            for k in teams[0]:
-                union(j , k)
-            break
+    teams = (list(map(int, input().split()))[1::])
+    first_teamates.append(teams[0])
+    for k in teams[1::]:
+        union(first_teamates[i], k)
+
+cnt = 0
 for i in range(m):
-    if partys[i] == False:
+    if find(first_teamates[i]) == find(first_knower):
         continue
-    team = teams[i]
-    for man in team:
-        if find(man) in knowers:
-            partys[i] = False
-            break
-cnt =0 
-for party in partys:
-    if party:
-        cnt+=1
+    else:
+        cnt += 1
+
 print(cnt)
