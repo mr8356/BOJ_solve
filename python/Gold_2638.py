@@ -4,9 +4,10 @@ input = sys.stdin.readline
 n , m = map(int, input().split())
 box = []
 for i in range(n):
-    box.append(list(map(int,input().split())))
+    box.append(list(map(lambda x:'c' if x==1 else x,list(map(int,input().split())))))
 
 queue = deque()
+cheeseQueue = deque()
 
 def isInside(x,y):
     if 0<=x<n:
@@ -14,59 +15,88 @@ def isInside(x,y):
             return True
     return False
 
-for x in range(n):
-    for y in range(m):
-        cnt = 0
-        if box[x][y] == 0:
-            continue
-        if isInside(x-1, y) and box[x-1][y] == 0:
-            cnt+=1
-        if isInside(x+1, y) and box[x+1][y] ==0:
-            cnt+=1
-        if isInside(x, y+1) and box[x][y+1]==0:
-            cnt+=1
-        if isInside(x, y-1) and box[x][y-1]==0:
-            cnt+=1
-        if cnt>=2:
-            box[x][y] = -1 # 임시
-            queue.append((x,y,1))#x,y,소멸되는데 걸리는 시간
-        elif cnt ==1:
-            box[x][y] = 2
-
+def initBfs(node):
+    global queue,cheeseQueue
+    x,y = node
+    queue.append((x,y))
+    while queue:
+        x,y = queue.popleft()
+        if isInside(x-1, y) :
+            if box[x-1][y] == 'c':
+                box[x-1][y] = 1
+            elif box[x-1][y]==1:
+                cheeseQueue.append((x-1,y,1))
+            elif box[x-1][y] == 0:
+                queue.append((x-1,y))
+                box[x-1][y] = 'a' # air
+        if isInside(x+1, y):
+            if box[x+1][y] == 'c':
+                box[x+1][y] = 1
+            elif box[x+1][y]==1:
+                cheeseQueue.append((x+1,y,1))
+            elif box[x+1][y] == 0:
+                queue.append((x+1,y))
+                box[x+1][y] = 'a'
+        if isInside(x, y+1):
+            if box[x][y+1] == 'c':
+                box[x][y+1] = 1
+            elif box[x][y+1]==1:
+                cheeseQueue.append((x,y+1,1))
+            elif box[x][y+1] == 0:
+                queue.append((x,y+1))
+                box[x][y+1] = 'a'
+        if isInside(x, y-1):
+            if box[x][y-1] == 'c':
+                box[x][y-1] = 1
+            elif box[x][y-1]==1:
+                cheeseQueue.append((x,y-1,1))
+            elif box[x][y-1] == 0:
+                queue.append((x,y-1))
+                box[x][y-1] = 'a'
 
 def bfs():
+    global cheeseQueue
     totalTime = 0
-    while queue:
-        node = queue.popleft()
-        x = node[0]
-        y = node[1]
-        time = node[2]
+    while cheeseQueue:
+        x,y,time = cheeseQueue.popleft()
         totalTime = max(totalTime, time)
-        box[x][y] = 0
         if isInside(x-1, y) :
-            if box[x-1][y] == 1:
-                box[x-1][y] +=1
-            elif box[x-1][y] == 2:
-                queue.append((x-1,y, time+1))
-                box[x-1][y] = 0
+            if box[x-1][y] == 'c':
+                box[x-1][y] = 1
+            elif box[x-1][y]==1:
+                cheeseQueue.append((x-1,y,time+1))
+                box[x-1][y] = 'a'
+            elif box[x-1][y] == 0:
+                initBfs((x-1,y))
+                box[x-1][y] = 'a' # air
         if isInside(x+1, y):
-            if box[x+1][y] == 1:
-                box[x+1][y] +=1
-            elif box[x+1][y] == 2:
-                queue.append((x+1,y, time+1))
-                box[x+1][y] = 0
+            if box[x+1][y] == 'c':
+                box[x+1][y] = 1
+            elif box[x+1][y]==1:
+                cheeseQueue.append((x+1,y,time+1))
+                box[x+1][y] = 'a'
+            elif box[x+1][y] == 0:
+                initBfs((x+1,y))
+                box[x+1][y] = 'a'
         if isInside(x, y+1):
-            if box[x][y+1] == 1:
-                box[x][y+1] +=1
-            elif box[x][y+1] == 2:
-                queue.append((x,y+1, time+1))
-                box[x][y+1] = 0
+            if box[x][y+1] == 'c':
+                box[x][y+1] = 1
+            elif box[x][y+1]==1:
+                cheeseQueue.append((x,y+1,time+1))
+                box[x][y+1] = 'a'
+            elif box[x][y+1] == 0:
+                initBfs((x,y+1))
+                box[x][y+1] = 'a'
         if isInside(x, y-1):
-            if box[x][y-1] == 1:
-                box[x][y-1] +=1
-            elif box[x][y-1] == 2:
-                queue.append((x,y-1, time+1))
-                box[x][y-1] = 0
+            if box[x][y-1] == 'c':
+                box[x][y-1] = 1
+            elif box[x][y-1]==1:
+                cheeseQueue.append((x,y-1,time+1))
+                box[x][y-1] = 'a'
+            elif box[x][y-1] == 0:
+                initBfs((x,y-1))
+                box[x][y-1] = 'a'
     return totalTime
-        
+
+initBfs((0,0))
 print(bfs())
