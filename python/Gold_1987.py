@@ -3,12 +3,10 @@ input = sys.stdin.readline
 n, m = map(int, input().split())
 dx = [1, -1, 0, 0]
 dy = [0, 0, 1, -1]
-box = []
-for i in range(n):
-    # 받는 문자들을 아스키코드로 변환하고 인덱스로 활용하기 위해
-    # 아스키코드-A 적용. ex) A = 0, B = 2, C = 3
-    box.append(list(map(lambda x: ord(x)-ord('A'), list(input()))))
-
+box = [list(input()) for _ in range(n)]
+# 똑같은 곳을 다시 가는 경우를 최대한 빼기위해 visted는 항상 필요
+# 아무리 지난 알파벳으로 검증한다고 해도 똑같은 알파벳 조건으로 다시오는 경우가 있음
+visited = [[''] * m for _ in range(n)]
 
 def isInside(x, y):
     if 0 <= x < n:
@@ -19,76 +17,25 @@ def isInside(x, y):
 
 maxDepth = 1
 
-
-def dfs(x, y, visted, depth):
+def dfs(x, y, depth, prv):
     global box, maxDepth
     if depth > maxDepth:
         maxDepth = depth
+        if maxDepth == 26:
+            print(maxDepth)
+            exit()
     for i in range(4):
         nx, ny = x+dx[i], y+dy[i]
         if isInside(nx, ny):
-            if not visted[box[nx][ny]]:
-                tmp = visted.copy()
-                tmp[box[nx][ny]] = True
-                dfs(nx, ny, tmp, depth+1)
+            char = box[nx][ny]
+            # 1.입장해도 되는 지(새알파벳인지) and 2.이전에 똑같은 조건으로 입장한건 아닌지(중복 발생)
+            if char not in prv and not prv + char == visited[nx][ny]:
+                visited[nx][ny] = prv + char
+                dfs(nx, ny, depth+1, visited[nx][ny])
 
 
-visted = [False]*(ord('Z')-ord('A')+1)
-visted[box[0][0]] = True
-dfs(0, 0, visted, 1)
+visited[0][0] = box[0][0]
+dfs(0, 0, 1, box[0][0])
+
+
 print(maxDepth)
-
-
-# 1st
-# import sys
-# from collections import deque
-# input = sys.stdin.readline
-# r,c = map(int, input().split())
-# maps = [list(input().strip()) for _ in range(r)]
-# move = [(-1,0),(1,0),(0,-1),(0,1)]
-# q = set()
-# q.add((0,0,maps[0][0]))
-# answer = 0
-# def bfs(q):
-#   global answer
-#   while q:
-#     a,b,alpha = q.pop()
-#     answer = max(answer, len(alpha))
-#     if answer == 26:
-#       return
-#     for move_x, move_y in move:
-#       nx = a + move_x
-#       ny = b + move_y
-#       if 0 <= nx < r and 0 <= ny < c and not maps[nx][ny] in alpha:
-#         q.add((nx,ny,alpha + maps[nx][ny]))
-#   return
-# bfs(q)
-# print(answer)
-
-
-# 2st
-# R, C = map(int, input().split())
-# board = [list(input()) for _ in range(R)]
-
-# visited = [[''] * C for _ in range(R)]
-# Di = [-1, 1, 0, 0]
-# Dj = [0, 0, -1, 1]
-# result = 0
-# stack = [(0, 0, 1, board[0][0])]
-
-# while stack:
-#     i, j, deep, words = stack.pop()
-#     if deep > result:
-#         result = deep
-#         if result == 26:
-#             break
-
-#     for k in range(4):
-#         ni, nj = i + Di[k], j + Dj[k]
-
-#         if 0 <= ni < R and 0 <= nj < C and board[ni][nj] not in words:
-#             temp = words + board[ni][nj]
-#             if temp not in visited[ni][nj]:
-#                 visited[ni][nj] = temp
-#                 stack.append((ni, nj, deep + 1, temp))
-# print(result)
