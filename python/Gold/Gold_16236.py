@@ -65,6 +65,7 @@ def bfs():
         level += 1
         eatCount = 0
     shark = (fish_x,fish_y)
+    # 걸린 시간 반환 
     return fish_t
 
 time = 0
