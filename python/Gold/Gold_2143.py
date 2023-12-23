@@ -32,10 +32,5 @@ b_list.sort()
 for aget in a_list:
     num = bisect_right(b_list, t-aget) - bisect_left(b_list, t-aget)
     cnt += num
-cnt += bisect_right(a_list, t) - bisect_left(a_list, t)
-cnt += bisect_right(b_list, t) - bisect_left(b_list, t)
 
-if t == 0:
-  print(cnt+1)
-else:
-  print(cnt)
+print(cnt)
